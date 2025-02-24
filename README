@@ -1,0 +1,114 @@
+# Microservices Deployment on Kubernetes
+
+## Project Overview
+
+This project contains two microservices deployed on a Kubernetes cluster. The microservices are:
+
+1. **Hello Service**: A simple service that responds with a greeting message.
+2. **User Service**: A service that returns a list of users from a database.
+
+Both services are exposed via Kubernetes services, and an optional Ingress is set up to route traffic to the appropriate services based on the path.
+
+---
+
+## Prerequisites
+
+Before you begin, make sure you have the following tools installed:
+
+- **Minikube**: To create a local Kubernetes cluster.
+- **kubectl**: To interact with the Kubernetes cluster.
+- **Docker**: To build and push Docker images.
+- **A working Docker Hub account** (optional): For pushing custom Docker images if needed.
+
+Make sure your Docker daemon is running and accessible for Minikube.
+
+---
+
+## Step 1: Set Up the Kubernetes Cluster
+
+1. **Start Minikube**: 
+   If you don’t have Minikube running, start it with the following command:
+   ```bash
+   minikube start
+Verify Kubernetes is Running: Check if your Kubernetes cluster is up and running by using:
+
+kubectl get nodes
+You should see a node listed with a Ready status.
+Step 2: Build and Push Docker Images (if necessary)
+Build the Docker images: If you are using custom Docker images (like damienbat/hello-service or damienbat/user-service), build them with Docker:
+
+For hello-service:
+
+docker build -t damienbat/hello-service:latest ./hello-service
+For user-service:
+
+docker build -t damienbat/user-service:latest ./user-service
+Push the Docker images to Docker Hub (optional): If you want to push the images to Docker Hub, use the following commands:
+
+docker push damienbat/hello-service:latest
+docker push damienbat/user-service:latest
+Step 3: Deploy the Microservices on Kubernetes
+Create Deployments for Each Service: Apply the deployment YAML files for both services:
+
+kubectl apply -f k8s-deployments/hello-service.yaml
+kubectl apply -f k8s-deployments/user-service.yaml
+Verify Deployments: Check if the pods are running correctly:
+
+kubectl get pods
+You should see both hello-service and user-service pods in the Running state.
+
+Step 4: Expose the Services
+Create Services for Each Microservice: To expose each service, apply the service YAML files:
+
+kubectl apply -f k8s-deployments/hello-service-service.yaml
+kubectl apply -f k8s-deployments/user-service-service.yaml
+Verify Services: Check if the services are exposed correctly:
+
+kubectl get services
+You should see hello-service and user-service with their respective ClusterIP or NodePort.
+
+Step 5: Configure the Ingress Controller (Optional)
+Enable Ingress in Minikube: If you want to use Ingress to route traffic to the services, enable it with the following command:
+
+minikube addons enable ingress
+Apply the Ingress Configuration: Apply the Ingress YAML file to route traffic to the services based on paths:
+
+kubectl apply -f ingress/ingress.yaml
+Verify Ingress: Check if the Ingress is set up correctly:
+
+kubectl get ingress
+You should see api-gateway with the correct routes (/hello and /users).
+
+Step 6: Test the Services
+6.1 Test via NodePort
+You can test each service by accessing them through their NodePort:
+
+For hello-service: http://<minikube_ip>:30008/hello
+For user-service: http://<minikube_ip>:4000/users
+Replace <minikube_ip> with the actual Minikube IP, which you can get by running:
+
+minikube ip
+6.2 Test via Ingress (Optional)
+If you're using Ingress, you can test the services via the domain microservices.local:
+
+For hello-service: http://microservices.local/hello
+For user-service: http://microservices.local/users
+Ensure that your /etc/hosts file (or equivalent) is configured to map microservices.local to 127.0.0.1 (the Minikube IP).
+
+Step 7: Clean Up (Optional)
+When you're done, you can delete the resources to free up the Kubernetes cluster:
+
+Delete Deployments:
+
+kubectl delete -f k8s-deployments/hello-service.yaml
+kubectl delete -f k8s-deployments/user-service.yaml
+Delete Services:
+
+kubectl delete -f k8s-deployments/hello-service-service.yaml
+kubectl delete -f k8s-deployments/user-service-service.yaml
+Delete Ingress (if used):
+
+kubectl delete -f ingress/ingress.yaml
+Stop Minikube:
+
+minikube stop
