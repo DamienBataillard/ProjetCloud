@@ -15,11 +15,11 @@ spec:
           service:
             name: hello-service
             port:
-              number: 300080
+              number: 3000
       - path: /users
         pathType: Prefix
         backend:
           service:
             name: user-service
             port:
-              number: 300081
+              number: 4000
