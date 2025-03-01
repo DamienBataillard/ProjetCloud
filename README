@@ -50,8 +50,8 @@ docker push damienbat/user-service:latest
 Step 3: Deploy the Microservices on Kubernetes
 Create Deployments for Each Service: Apply the deployment YAML files for both services:
 
-kubectl apply -f k8s-deployments/hello-service.yaml
-kubectl apply -f k8s-deployments/user-service.yaml
+kubectl apply -f k8s-deployments/hello-service-deployment.yaml
+kubectl apply -f k8s-deployments/user-service-deployment.yaml
 Verify Deployments: Check if the pods are running correctly:
 
 kubectl get pods
