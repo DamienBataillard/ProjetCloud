@@ -100,8 +100,8 @@ When you're done, you can delete the resources to free up the Kubernetes cluster
 
 Delete Deployments:
 
-kubectl delete -f k8s-deployments/hello-service.yaml
-kubectl delete -f k8s-deployments/user-service.yaml
+kubectl delete -f k8s-deployments/hello-service-deployment.yaml
+kubectl delete -f k8s-deployments/user-service-deployment.yaml
 Delete Services:
 
 kubectl delete -f k8s-deployments/hello-service-service.yaml
