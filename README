@@ -83,8 +83,8 @@ Step 6: Test the Services
 6.1 Test via NodePort
 You can test each service by accessing them through their NodePort:
 
-For hello-service: http://<minikube_ip>:30008/hello
-For user-service: http://<minikube_ip>:4000/users
+For hello-service: http://<minikube_ip>:300080
+For user-service: http://<minikube_ip>:300081
 Replace <minikube_ip> with the actual Minikube IP, which you can get by running:
 
 minikube ip
